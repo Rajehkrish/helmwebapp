@@ -4,7 +4,7 @@ FROM nginx:latest
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Copy index.html to the Nginx web root
-COPY index.html /usr/share/nginx/html.i/index.html
+COPY index.html /ubuntu/share/nginx/index.html
 
 # Expose port 80
 EXPOSE 80
