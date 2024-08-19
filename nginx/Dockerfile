@@ -1,6 +1,9 @@
 FROM nginx:latest
 
-COPY default.conf /etc/nginx/conf.d/default.conf
-COPY index.html /usr/share/nginx/html/index.html
+# Copy Nginx configuration file
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Copy index.html to the Nginx web root
+COPY nginx/index.html /usr/share/nginx/html/index.html
 
 EXPOSE 80
