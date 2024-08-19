@@ -1,4 +1,4 @@
-#cicd project
+#cicd add
 name: CI Pipeline
 
 on:
