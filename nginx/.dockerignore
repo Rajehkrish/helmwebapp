@@ -1,0 +1,3 @@
+# Exclude node_modules and other unwanted files
+node_modules
+*.log
