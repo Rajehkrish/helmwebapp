@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: rajeshkrish/helmwebapp
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+ingress:
+  enabled: false
+
+resources: {}
