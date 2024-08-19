@@ -52,19 +52,29 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up Helm
+      uses: azure/setup-helm@v1
+      with:
+        version: 'v3.15.4'  # Update to your required Helm version
+
+    - name: Lint Helm Chart
+      run: helm lint ./helmwebapp
+
     - name: Deploy to Kubernetes using Helm
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}  # Ensure this secret contains the base64 encoded kubeconfig
       run: |
-        export KUBECONFIG=~/.kube/config
         helm upgrade --install helmwebapp ./helmwebapp --namespace default
 
     - name: Run integration tests
       run: |
         kubectl port-forward svc/helmwebapp 8080:80 &
         sleep 5
-        pytest tests/test_flask_integration.py
+        pytest tests/test_flask_integration.py  # Ensure this file exists and is properly configured
 
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2.1.1
       with:
-        webhook_url: \${{ secrets.SLACK_WEBHOOK_URL }}
-        message: "Deployment of helmwebapp on ${K8S_CLUSTER_NAME} completed successfully."
+        webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        message: "Deployment of helmwebapp on Kubernetes completed successfully."
+

@@ -13,3 +13,18 @@ ingress:
   enabled: false
 
 resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+serviceAccount:
+  create: false
+  name: default
+  automount: true
+
+# Define any other values as needed
+
