@@ -1,4 +1,4 @@
-#cicd workflow
+#cicd project
 name: CI Pipeline
 
 on:
