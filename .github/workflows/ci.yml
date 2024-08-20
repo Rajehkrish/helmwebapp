@@ -70,6 +70,7 @@ jobs:
           kubectl get pods --namespace default
           kubectl describe deployment helmwebapp --namespace default
           kubectl logs -l app=helmwebapp --namespace default
+          kubectl get events --namespace default
           exit 1
         }
 
