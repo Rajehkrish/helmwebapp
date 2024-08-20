@@ -52,14 +52,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Verify Kubernetes Configuration
+    - name: Set up KUBECONFIG
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+        chmod 600 ~/.kube/config
+
+    - name: Verify kubectl configuration
       run: |
         kubectl cluster-info
         kubectl get nodes
 
     - name: Deploy to Kubernetes using Helm
       run: |
-        helm version
         helm upgrade --install helmwebapp ./helmwebapp --namespace default
 
     - name: Run integration tests
