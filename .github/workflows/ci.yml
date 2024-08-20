@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install requests
+        pip install requests pytest
 
   docker-build:
     runs-on: ubuntu-latest
@@ -67,10 +67,15 @@ jobs:
       run: |
         helm upgrade --install helmwebapp ./helmwebapp --namespace default
 
-    - name: Run integration tests
+    - name: Wait for Pod to be Running
+      run: |
+        kubectl rollout status deployment/helmwebapp --namespace default
+        kubectl get pods --namespace default
+
+    - name: Run Integration Tests
       run: |
         kubectl port-forward svc/helmwebapp 8080:80 &
-        sleep 5
+        sleep 10  # Adjust sleep time if needed
         pytest tests/test_flask_integration.py
 
     - name: Slack Notification
