@@ -64,14 +64,19 @@ jobs:
 
     - name: Wait for Deployment Rollout
       run: |
-        kubectl rollout status deployment/helmwebapp --namespace default --timeout=10m
-        kubectl get pods --namespace default
-        kubectl describe deployment helmwebapp --namespace default
+        echo "Waiting for deployment to complete..."
+        kubectl rollout status deployment/helmwebapp --namespace default --timeout=10m || {
+          echo "Deployment failed. Fetching additional information..."
+          kubectl get pods --namespace default
+          kubectl describe deployment helmwebapp --namespace default
+          kubectl logs -l app=helmwebapp --namespace default
+          exit 1
+        }
 
     - name: Run integration tests
       run: |
         kubectl port-forward svc/helmwebapp 8080:80 &
-        sleep 15
+        sleep 30
         pytest tests/test_flask_integration.py
 
     - name: Slack Notification
