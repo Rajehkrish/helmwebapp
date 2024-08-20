@@ -2,29 +2,21 @@ replicaCount: 1
 
 image:
   repository: rajeshkrish/helmwebapp
-  tag: "latest"
-  pullPolicy: IfNotPresent
+  tag: latest
+  pullPolicy: Always
 
 service:
+  name: helmwebapp
   type: LoadBalancer
   port: 80
 
 ingress:
   enabled: false
-
-resources: {}
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
-
-serviceAccount:
-  create: false
-  name: default
-  automount: true
-
-# Define any other values as needed
+  name: ""
+  path: /
+  hosts:
+    - host: chart-example.local
+      paths:
+        - /
+  tls: []
 
