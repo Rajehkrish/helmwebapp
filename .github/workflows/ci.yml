@@ -44,7 +44,6 @@ jobs:
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/flaskapp:latest
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest
 
-jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: docker-build
@@ -52,12 +51,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up KUBECONFIG
-      run: |
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
-        chmod 600 ~/.kube/config
 
     - name: Verify Kubernetes Configuration
       run: |
@@ -80,5 +73,4 @@ jobs:
       with:
         webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
         message: "Deployment of helmwebapp on ${K8S_CLUSTER_NAME} completed successfully."
-
 
